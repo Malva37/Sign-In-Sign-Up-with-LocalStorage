@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <section class="signUp">
+        <h3>Please Sign up</h3>
+        <form name="signUp">
+            <input type="text" class="firstNameSignUp" placeholder="First name">
+            <span  class="messageFirstNameSignUp error">This email already exist</span>
+            <input type="text"  class="secondNameSignUp" placeholder="Second name">
+            <span class="messageSecondNameSignUp error">This email already exist</span>
+            <input type="email" class="emailSignUp" placeholder="Email">
+            <span class="messageEmailSignUp error">This email already exist</span>
+            <input type="password" class="passwordSignUp" placeholder="Password">
+            <input type="button" class="btnSignUp" value="Sign up">
+        </form>
+        <p class="changeOnSignIn">Sign in now</p>
+    </section>
+    <section class="signIn">
+        <h3>Please Sign in</h3>
+        <form name="signIn">
+            <input type="email" class="emailSignIn" placeholder="Email">
+            <span class="messageEmailSignIn error">Incorrect email or password</span>
+            <input type="password" class="passwordSignIn" placeholder="Password">
+            <span class="messagePasswordSignIn error">Incorrect email or password</span>
+            <input type="button" class="btnSignIn" value="Sign in">
+        </form>
+        <p class="changeOnSignUp">Sign up now</p>
+
+    </section>
+    <section class="cardUser">
+        <div class="userPhoto">
+            <img src="images/woman.png" alt="">
+        </div>
+        <div class="userName">
+            <span class="userFirstName"></span>
+            <span class="userSecondName"></span>
+        </div>
+        <div class="userEmail"></div>
+        <div class="userPosition">Designer & Web Developing</div>
+        <button class="btnSignOut">Sign Out</button>
+    </section>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
