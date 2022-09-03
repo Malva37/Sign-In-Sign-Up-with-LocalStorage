@@ -13,14 +13,16 @@
         <h3>Please Sign up</h3>
         <form name="signUp">
             <input type="text" class="firstNameSignUp" placeholder="First name">
-            <span  class="messageFirstNameSignUp error">This email already exist</span>
+            <span class="messageFirstNameSignUp error">This field can not be empty</span>
             <input type="text"  class="secondNameSignUp" placeholder="Second name">
-            <span class="messageSecondNameSignUp error">This email already exist</span>
+            <span class="messageSecondNameSignUp error">This field can not be empty</span>
             <input type="email" class="emailSignUp" placeholder="Email">
-            <span class="messageEmailSignUp error">This email already exist</span>
+            <span class="messageEmailSignUp error">This field can not be empty</span>
             <input type="password" class="passwordSignUp" placeholder="Password">
-            <input type="button" class="btnSignUp" value="Sign up">
+            <span class="messagePasswordSignUp error">This field can not be empty</span>
+            <!-- <input type="submit" class="btnSignUp" value="Sign up"> -->
         </form>
+        <button class="btnSignUp">Sign up</button>
         <p class="changeOnSignIn">Sign in now</p>
     </section>
     <section class="signIn">
@@ -30,8 +32,10 @@
             <span class="messageEmailSignIn error">Incorrect email or password</span>
             <input type="password" class="passwordSignIn" placeholder="Password">
             <span class="messagePasswordSignIn error">Incorrect email or password</span>
-            <input type="button" class="btnSignIn" value="Sign in">
+            <!-- <input type="button" class="btnSignIn" value="Sign in"> -->
         </form>
+        <button class="btnSignIn">Sign in</button>
+
         <p class="changeOnSignUp">Sign up now</p>
 
     </section>

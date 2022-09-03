@@ -31,10 +31,10 @@ section{
     border-radius: 50%;
 }
 
-h3, .passwordSignUp{
+h3{
     margin-bottom: 12px;
 }
-input{
+input, .btnSignUp, .btnSignIn{
     display: block;
     border-radius: 10px;
     padding: 3%;
