@@ -9,21 +9,10 @@ let signUpFormElements = document.querySelectorAll('.signUp input');
 let signInFormElements = document.querySelectorAll('.signIn input');
 let arrayInputsSignUpForm = Array.prototype.slice.call(signUpFormElements);
 let arrayInputsSignInForm = Array.prototype.slice.call(signInFormElements);
-let users = [];
 let user;
+let users = [];
+localStorage.setItem('users', JSON.stringify(users));
 
-getSel('.changeOnSignIn').onclick = () => {
-    getSel('.signIn').style.display = 'block';
-    getSel('.signUp').style.display = 'none';
-    errorsSignUp.forEach(elem => elem.style.backgroundColor = 'white');
-    arrayInputsSignInForm.forEach(elem => elem.style.border = '2px solid gray');
-}
-getSel('.changeOnSignUp').onclick = () => {
-    getSel('.signUp').style.display = 'block';
-    getSel('.signIn').style.display = 'none';
-    errorsSignIn.forEach(elem => elem.style.backgroundColor = 'white');
-    arrayInputsSignUpForm.forEach(elem => elem.style.border = '2px solid gray');
-}
 
 class User {
     constructor(firstN, secondN, email, password) {
@@ -34,108 +23,121 @@ class User {
     }
 }
 
-getSel('.btnSignUp').onclick = () => {
+getSel('.changeOnSignIn').onclick = () => {
+    getSel('.signIn').style.display = 'block';
+    getSel('.signUp').style.display = 'none';
+    signUpForm.reset();
+    errorsSignUp.forEach(elem => elem.style.backgroundColor = 'white');
+    arrayInputsSignInForm.forEach(elem => elem.style.border = '2px solid gray');
+}
+getSel('.changeOnSignUp').onclick = () => {
+    getSel('.signUp').style.display = 'block';
+    getSel('.signIn').style.display = 'none';
+    signInForm.reset();
+    errorsSignIn.forEach(elem => elem.style.backgroundColor = 'white');
+    arrayInputsSignUpForm.forEach(elem => elem.style.border = '2px solid gray');
+}
 
+
+getSel('.btnSignUp').onclick = () => {
     let firstName = getSel('.firstNameSignUp').value;
     let secondName = getSel('.secondNameSignUp').value;
     let email = getSel('.emailSignUp').value;
     let password = getSel('.passwordSignUp').value;
 
-    if (users.some((user) => user.email == email)) {
-        getSel('.messageEmailSignUp').style.backgroundColor = 'crimson';
-        getSel('.messageEmailSignUp').textContent = 'This email already exist';
-        errorsSignUp.forEach(elem => elem.style.backgroundColor = 'white');
-        return;
-    } 
-    // else if (!email) {
-    //     getSel('.messageEmailSignUp').style.backgroundColor = 'crimson';
-    //     getSel('.messageEmailSignUp').textContent = 'This field can not be empty';
-    // } 
-    else {
-        getSel('.messageEmailSignUp').style.backgroundColor = 'white';
-        let user = new User(firstName, secondName, email, password);
-        users.push(user);
-        localStorage.setItem('users', JSON.stringify(users));
-        signUpForm.reset();
+    if (isFormValid(arrayInputsSignUpForm)) {
+        console.log(('all fields are valid'));
+        if (isEmailExist(email)) {
+            getSel('.messageEmailSignUp').style.backgroundColor = 'white';
+            let user = new User(firstName, secondName, email, password);
+            users.push(user);
+            localStorage.setItem('users', JSON.stringify(users));
+            arrayInputsSignUpForm.forEach(elem => elem.style.border = '2px solid gray');
+            signUpForm.reset();
+        }
     }
+}
 
-    arrayInputsSignUpForm.forEach((element)=>{
-        if(element.length>=2){
-            element.style.border = '2px solid green';
-        } else if(!element.value){
-            element.style.border = '2px solid red';
-            element.nextElementSibling.style.backgroundColor = 'crimson';
-        } else{
-            element.style.border = '2px solid red';
+function isFormValid(array) {
+    let isValid = true;
+    array.forEach((element) => {
+        let isCurrentFieldValid = isLengthValid(element);
+        if (!isCurrentFieldValid) {
+            isValid = false;
         }
     })
-
-       
-  
+    return isValid;
 }
+
+function isLengthValid(field) {
+    if (field.value.length >= 2) {
+        field.style.border = '2px solid green';
+        field.nextElementSibling.style.backgroundColor = 'white';
+        return true;
+    } else if (!field.value) {
+        field.style.border = '2px solid red';
+        field.nextElementSibling.style.backgroundColor = 'crimson';
+        field.nextElementSibling.textContent = 'This field can not be empty';
+        return false;
+    } else {
+        field.style.border = '2px solid red';
+        field.nextElementSibling.style.backgroundColor = 'crimson';
+        field.nextElementSibling.textContent = 'This field must be longer(more than 1 chains)';
+        return false;
+    }
+}
+
+function isEmailExist(emailValue) {
+    if (users.some((user) => user.email == emailValue)) {
+        errorsSignUp.forEach(elem => elem.style.backgroundColor = 'white');
+        getSel('.messageEmailSignUp').textContent = 'This email already exist';
+        getSel('.messageEmailSignUp').style.backgroundColor = 'crimson';
+        getSel('.emailSignUp').style.border = '2px solid red';
+        return false;
+    } else {
+        return true;
+    }
+}
+
 
 getSel('.btnSignIn').onclick = () => {
     let email = getSel('.emailSignIn').value;
     let password = getSel('.passwordSignIn').value;
+    if (isFormValid(arrayInputsSignInForm)) {
+        if (getUser(email, password)) {
 
+        }
 
-    
-    arrayInputsSignInForm.forEach((element)=>{
-        if(element.length>=2){
-            element.style.border = '2px solid green';
+    }
 
-
-
-///
-
-            getSel('.messagePasswordSignIn').style.backgroundColor = 'white';
-            fromJSONUsers = JSON.parse(localStorage.getItem('users'));
+    function getUser(email, password) {
+        let fromJSONUsers = JSON.parse(localStorage.getItem('users'));
+        if (!fromJSONUsers) {
+            getSel('.messagePasswordSignIn').textContent = 'Local Storage is empty';
+            getSel('.messagePasswordSignIn').style.backgroundColor = 'crimson';
+            arrayInputsSignInForm.forEach(elem => elem.style.border = '2px solid gray');
+        } else {
             for (let i = 0; i < fromJSONUsers.length; i++) {
                 let user = fromJSONUsers[i];
                 if (user.email == email && user.password == password) {
                     getSel('.cardUser').style.display = 'block';
                     getSel('.signIn').style.display = 'none';
-                    getSel('.userFirstName').textContent = user.firstN;
-                    getSel('.userSecondName').textContent = user.secondN;
+                    getSel('.userFirstName').textContent = user.firstName;
+                    getSel('.userSecondName').textContent = user.secondName;
                     getSel('.userEmail').textContent = user.email;
+                    signInForm.reset();
+                    arrayInputsSignInForm.forEach(elem => elem.style.border = '2px solid gray');
+                    errorsSignIn.forEach(elem => elem.style.backgroundColor = 'white');
                     return user;
+                } else {
+                    arrayInputsSignInForm.forEach(elem => elem.style.border = '2px solid gray');
+                    getSel('.messagePasswordSignIn').textContent = 'Incorrect email or password';
+                    getSel('.messagePasswordSignIn').style.backgroundColor = 'crimson';
                 }
             }
-
-///
-
-        } else if(!element.value){
-            element.style.border = '2px solid red';
-            element.nextElementSibling.style.backgroundColor = 'crimson';
-            element.nextElementSibling.textContent = 'Field is empty';
-        } else{
-            element.style.border = '2px solid red';
         }
-    })
-    // if (!email && !password) {
-    //     getSel('.messagePasswordSignIn').style.backgroundColor = 'crimson';
-    //     getSel('.messagePasswordSignIn').textContent = 'Email and password are empty';
-    // } else if (!email) {
-    //     getSel('.messagePasswordSignIn').style.backgroundColor = 'crimson';
-    //     getSel('.messagePasswordSignIn').textContent = 'Email is empty';
-    // } else if (!password) {
-    //     getSel('.messagePasswordSignIn').style.backgroundColor = 'crimson';
-    //     getSel('.messagePasswordSignIn').textContent = 'Password is empty';
-    // } else {
-    //     getSel('.messagePasswordSignIn').style.backgroundColor = 'white';
-    //     fromJSONUsers = JSON.parse(localStorage.getItem('users'));
-    //     for (let i = 0; i < fromJSONUsers.length; i++) {
-    //         let user = fromJSONUsers[i];
-    //         if (user.email == email && user.password == password) {
-    //             getSel('.cardUser').style.display = 'block';
-    //             getSel('.signIn').style.display = 'none';
-    //             getSel('.userFirstName').textContent = user.firstN;
-    //             getSel('.userSecondName').textContent = user.secondN;
-    //             getSel('.userEmail').textContent = user.email;
-    //             return user;
-    //         }
-    //     }
-    // }
+
+    }
 }
 
 getSel('.btnSignOut').onclick = () => {

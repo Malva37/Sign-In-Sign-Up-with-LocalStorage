@@ -34,6 +34,10 @@ section{
 h3{
     margin-bottom: 12px;
 }
+input:focus , input:hover{
+    outline: none;
+    /* border:none; */
+  }
 input, .btnSignUp, .btnSignIn{
     display: block;
     border-radius: 10px;
